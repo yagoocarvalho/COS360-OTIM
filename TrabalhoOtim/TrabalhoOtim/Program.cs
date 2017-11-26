@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharedLibrary;
 
 namespace TrabalhoOtim
 {
@@ -19,10 +20,16 @@ namespace TrabalhoOtim
                 return;
             }
 
+            // Iterando sobre o vetor inicial
             for (int i = 0; i < _x0.Length; i++)
             {
-                Console.WriteLine (_x0[i].ToString());
+                Console.WriteLine (_x0[i].ToString("0.00"));
             }
+
+            // Calculando o passo usando Armijo
+            double t = Armijo.Execute ();
+
+            Console.WriteLine ("Passo: " + t.ToString("0.00"));
 
             Console.ReadKey ();
         }
