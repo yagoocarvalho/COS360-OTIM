@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SharedLibrary;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace TrabalhoOtim
 {
@@ -27,7 +28,12 @@ namespace TrabalhoOtim
             }
 
             // Calculando o passo usando Armijo
-            double t = Armijo.Execute ();
+            double t = Armijo.Execute( DenseMatrix.OfArray(new Double[,] { { 1 }, { 0 } }),
+                                       DenseMatrix.OfArray(new Double[,] { { 3 }, { 1 } })
+                                      );
+
+
+            Console.WriteLine(Gradient.Execute());
 
             Console.WriteLine ("Passo: " + t.ToString("0.00"));
 
