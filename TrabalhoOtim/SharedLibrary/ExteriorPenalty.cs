@@ -15,7 +15,7 @@ namespace SharedLibrary
 
             double         t     = 1.0;
             double tol = Double.MaxValue;
-
+            
             bool   stablized   = false;
             double p           = p0;
             Matrix<double> min = DenseMatrix.OfArray (new Double[,] {

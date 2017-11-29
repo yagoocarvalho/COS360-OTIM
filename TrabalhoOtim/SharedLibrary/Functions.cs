@@ -38,7 +38,19 @@ namespace SharedLibrary
             return returnObj;
         }
 
-        public static Matrix<double> d2f (double x1, double x2, double x3, double x4)
+        public static Matrix<double> matrixCoeficientsGradient() {
+            Matrix<double> matrixCoeficientsGradient =
+                                DenseMatrix.OfArray(new Double[,] {
+                                    {0.0,   -10.0, -2.0,  -3.0},
+                                    {-10.0,     0, -10.0,  -10.0},
+                                    {-2.0,  -10.0,   0,    -1},
+                                    {-3.0,  -10.0,  -1,      0}
+                                });
+
+            return matrixCoeficientsGradient;
+        }
+
+        public static Matrix<double> d2f ()
         {
             return DenseMatrix.OfArray (new Double[,] {
                 {  0.0, -10.0,  -2.0,  -3.0},

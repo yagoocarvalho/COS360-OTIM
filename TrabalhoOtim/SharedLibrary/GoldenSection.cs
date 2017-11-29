@@ -11,30 +11,60 @@ namespace SharedLibrary
     class GoldenSection
     {
 
-        // phi(t) = f(x' + td), onde x' seria o ponto inicial
-        public static void phi(Matrix<double> x, Matrix<double> d, double t) {
-            //supondo x' = [1,1]
+        public static double phi(Matrix<double> x, Matrix<double> d, double t, double p) {
+            double x0 = x.At(0, 0) + t * d.At(0, 0);
+            double x1 = x.At(1, 0) + t * d.At(1, 0);
+            double x2 = x.At(2, 0) + t * d.At(2, 0);
+            double x3 = x.At(3, 0) + t * d.At(3, 0);
 
+            Matrix<double> tempX = DenseMatrix.OfArray( new Double[,] {
+                                                                           {x0},
+                                                                           {x1},
+                                                                           {x2},
+                                                                           {x3}});
+            return Functions.f_pen_ext(x, p);
 
         }
-        public static double Execute()
-        {
 
+
+        public static double Execute(Matrix<double> x, Matrix<double> d, double p)
+        {
+            double tol = 0.0001;
             double teta1 = (3 - Math.Sqrt(5)) / 2;
             double teta2 = 1 - teta1;
+            double b = 0;
+            double rho = 0.5;
+            
+            double a = 0;
+            double s = b;
+            b = 2 * rho;
+            //Obtenção do intervalo [a,b]   
+            while (phi(x, d, b, p) < phi(x, d, s, p)) {
+                a = s;
+                s = b;
+                b = 2*b;
+            }
 
-            Matrix<double> a = DenseMatrix.OfArray(
-                                        new Double[,] { { 1 }, { 1 } });
+            //Obtenção de t*
+            double u = a + teta1 * (b - a);
+            double v = a + teta2 * (b - a);
+            //Nº max de iterações
+            double k = 0;
 
-            double t = 1.0;
-            Matrix<double> x = DenseMatrix.OfArray(new Double[,] { { 1 }, { 0 } });
-            Matrix<double> d = DenseMatrix.OfArray(new Double[,] { { 3 }, { 1 } });
+            while ((b - a) > tol) {
+                if (phi(x, d, u, p) < phi(x, d, v, p)){
+                    b = v;  v = u; u = a + teta1 * (b - a);
+                }
+                else {
+                    a = u; u = v; v = a + teta2 * (b - a);
+                }
+                k++;
+                if (k >= 1000)
+                    break;
+            }
 
-            double n = 0.25;
-            double y = 0.8;
-
-            int i = 0;
-            return -1;
+            double t = (u + v) / 2;
+            return t;
         }
     }
 }

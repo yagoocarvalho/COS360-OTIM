@@ -46,6 +46,7 @@
     <Compile Include="Armijo.cs" />
     <Compile Include="ExteriorPenalty.cs" />
     <Compile Include="Functions.cs" />
+    <Compile Include="GetMinimum.cs" />
     <Compile Include="GoldenSection.cs" />
     <Compile Include="Gradient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

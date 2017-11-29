@@ -23,6 +23,10 @@ namespace TrabalhoOtim
                 return;
             }
 
+
+            GetMinimum.Execute();
+
+            //}
             //Matrix<double> d = DenseMatrix.OfArray(new Double[,] {
             //    {-1},
             //    {-1},
