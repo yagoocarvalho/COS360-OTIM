@@ -40,9 +40,9 @@ namespace SharedLibrary
             double k = 0.0;
             Matrix<double> d;
 
-            while (!isVectorZero(Functions.df(x)))
+            while (!isVectorZero(Functions.df_pen_ext(x, rho)))
             {
-                d = Functions.df(x).Negate();
+                d = Functions.df_pen_ext(x, rho).Negate();
                 t = Armijo.Execute(x,d);
                 x = x.Add(d.Multiply(t));
                 k = k + 1;
