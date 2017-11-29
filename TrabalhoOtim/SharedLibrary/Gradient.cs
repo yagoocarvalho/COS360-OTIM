@@ -33,7 +33,7 @@ namespace SharedLibrary
             return (x.At (0, 0) == 0 && x.At (1, 0) == 0 && x.At (2, 0) == 0 && x.At (3, 0) == 0);
         }
 
-        public static Matrix<double> Execute(Matrix<double> x, double rho, Functions.Funct f)
+        public static Matrix<double> Execute(Matrix<double> x, double rho)
         {
            
             double t = 1.0;
@@ -43,7 +43,7 @@ namespace SharedLibrary
             while (!isVectorZero(Functions.df_pen_ext(x, rho)))
             {
                 d = Functions.df_pen_ext(x, rho).Negate();
-                t = Armijo.Execute(x,d);
+                t = Armijo.Execute(x,d, rho);
                 x = x.Add(d.Multiply(t));
                 k = k + 1;
 

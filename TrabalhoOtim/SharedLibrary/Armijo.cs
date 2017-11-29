@@ -42,7 +42,7 @@ namespace SharedLibrary
         /// Método para achar o passo usando a técnica de Armijo
         /// </summary>
         /// <returns></returns>
-        public static double Execute(Matrix<double> x, Matrix<double> d)
+        public static double Execute(Matrix<double> x, Matrix<double> d, double rho)
         {
             double t = 1.0;
             double n = 0.25;
@@ -50,7 +50,7 @@ namespace SharedLibrary
 
             int i = 0;
 
-            while (Functions.f(x.Add(d.Multiply(t))) > (Functions.f(x) + n * t * (Functions.df(x).TransposeAndMultiply(d).At(0, 0))))
+            while (Functions.f_pen_ext(x.Add(d.Multiply(t)), rho) > (Functions.f_pen_ext(x, rho) + n * t * (Functions.df_pen_ext(x, rho).TransposeAndMultiply(d).At(0, 0))))
             {
                 t = y * t;
                 i++;
@@ -60,6 +60,8 @@ namespace SharedLibrary
                     break;
                 }
             }
+
+            Console.WriteLine ("Chamadas Armijo: " + i.ToString());
             return t;
         }
     }

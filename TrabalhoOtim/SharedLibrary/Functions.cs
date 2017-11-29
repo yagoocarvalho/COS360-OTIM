@@ -10,9 +10,6 @@ namespace SharedLibrary
 {
     public class Functions
     {
-
-        public static delegate Matrix<double> Funct (Matrix<double> x, double rho);
-
         // -30x1 -10x1x2 - 2x1x3 - 3 x1x4 - 10x2 - 10x2x3 - 10x2x4 - 40 x3 - x3x4 - 12x4
         public static double f (Matrix<double> x)
         {
@@ -129,7 +126,7 @@ namespace SharedLibrary
                 return DenseMatrix.OfArray (new Double[,] {
                 {2180*x1 + 924*x2 + 3102*x3 + 726*x4 - 3896},
                 {2*(462*x1 + x2*(Math.Pow(x3,2.0)*Math.Pow((x4 - 1),2.0) - 2*x3*Math.Pow((x4 - 1),2.0) + Math.Pow(x4,2.0) - 2*x4 + 197) + Math.Pow(x3,2.0)*Math.Pow(-x4,2.0) + 2*Math.Pow(x3,2.0)*x4 - Math.Pow(x3,2.0) + 2*x3*Math.Pow(x4,2.0) - 4*x3*x4 + 660*x3 - Math.Pow(x4,2.0) + 156*x4 - 827)},
-                {2*(1551*x1 + Math.Pow(x2,2.0)*(x3 - 1)*Math.Pow((x4 - 1),2.0) - 2*x2*(x3*Math.Pow((x4 - 1),2.0) - Math.Pow(x4,2.0) + 2*x4 - 330) + x3*Math.Pow(x4,2.0) - 2*x3*x4 + 2210*x3 - Math.Pow(x4,2.) + 519*x4 - 2774)},
+                {2*(1551*x1 + Math.Pow(x2,2.0)*(x3 - 1)*Math.Pow((x4 - 1),2.0) - 2*x2*(x3*Math.Pow((x4 - 1),2.0) - Math.Pow(x4,2.0) + 2*x4 - 330) + x3*Math.Pow(x4,2.0) - 2*x3*x4 + 2210*x3 - Math.Pow(x4,2.0) + 519*x4 - 2774)},
                 {2*(363*x1 + Math.Pow(x2,2.0)*Math.Pow((x3 - 1),2.0)*(x4 - 1) - 2*x2*(Math.Pow(x3,2.0)*(x4 - 1) - 2*x3*(x4 - 1) + x4 - 78) + Math.Pow(x3,2.0)*x4 - Math.Pow(x3,2.0) - 2*x3*x4 + 519*x3 + 122*x4 - 650)}
                 });
             }

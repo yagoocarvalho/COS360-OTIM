@@ -24,7 +24,7 @@ namespace TrabalhoOtim
             }
 
 
-            GetMinimum.Execute();
+            //GetMinimum.Execute();
 
             //}
             //Matrix<double> d = DenseMatrix.OfArray(new Double[,] {
@@ -61,38 +61,38 @@ namespace TrabalhoOtim
             { _d0[3] }
             });
 
-            Execute(x, d, 1.0);
+            ExteriorPenalty.Execute(x, 1.0, 3.0);
 
             Console.ReadKey ();
         }
 
-        private static void Execute(Matrix<double> x, Matrix<double> d, double p0, double B = 3.0)
-        {
-            bool   stablized   = false;
-            double p           = p0;
-            Matrix<double> min = DenseMatrix.OfArray (new Double[,] {
-            {0.0},
-            {0.0},
-            {0.0},
-            {0.0}
-            });
-            for (int k = 0; k < 1000; k++)
-            {
-                // Gradiente da função penalizada
-                min = Gradient.Execute (x, d);
-                if (stablized)
-                {
-                    break;
-                }
-                else
-                {
-                    p = B * p;
-                }
-            }
+        //private static void Execute(Matrix<double> x, Matrix<double> d, double p0, double B = 3.0)
+        //{
+        //    bool   stablized   = false;
+        //    double p           = p0;
+        //    Matrix<double> min = DenseMatrix.OfArray (new Double[,] {
+        //    {0.0},
+        //    {0.0},
+        //    {0.0},
+        //    {0.0}
+        //    });
+        //    for (int k = 0; k < 1000; k++)
+        //    {
+        //        // Gradiente da função penalizada
+        //        min = Gradient.Execute (x, d);
+        //        if (stablized)
+        //        {
+        //            break;
+        //        }
+        //        else
+        //        {
+        //            p = B * p;
+        //        }
+        //    }
 
-            Console.WriteLine("p = " + p.ToString());
-            Console.WriteLine(String.Format("Ponto mínimo = [{0}, {1}, {2}, {3}]", min.At(0,0), min.At(1,0), min.At(2,0), min.At(3,0)));
-        }
+        //    Console.WriteLine("p = " + p.ToString());
+        //    Console.WriteLine(String.Format("Ponto mínimo = [{0}, {1}, {2}, {3}]", min.At(0,0), min.At(1,0), min.At(2,0), min.At(3,0)));
+        //}
 
         private static bool ParseOptions ()
         {
