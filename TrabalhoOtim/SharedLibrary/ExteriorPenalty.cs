@@ -31,6 +31,8 @@ namespace SharedLibrary
             double tol = Double.MaxValue;
 
             double p = 0;
+
+            return x;
         }
     }
 }

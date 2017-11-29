@@ -10,9 +10,7 @@ namespace SharedLibrary
 {
     public class Armijo
     {
-        /// <summary>
-        /// Método para achar o passo usando a técnica de Armijo
-        /// </summary>
+        
 
         static double f1(Matrix<double> x)
         {
@@ -40,6 +38,9 @@ namespace SharedLibrary
 
         }
 
+        /// <summary>
+        /// Método para achar o passo usando a técnica de Armijo
+        /// </summary>
         /// <returns></returns>
         public static double Execute( Matrix<double> x, Matrix<double> d)
         {
