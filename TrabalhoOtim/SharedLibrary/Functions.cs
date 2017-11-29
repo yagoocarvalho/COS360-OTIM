@@ -11,6 +11,8 @@ namespace SharedLibrary
     public class Functions
     {
 
+        public static delegate Matrix<double> Funct (Matrix<double> x, double rho);
+
         // -30x1 -10x1x2 - 2x1x3 - 3 x1x4 - 10x2 - 10x2x3 - 10x2x4 - 40 x3 - x3x4 - 12x4
         public static double f (Matrix<double> x)
         {
@@ -77,6 +79,63 @@ namespace SharedLibrary
             double returnValue = Functions.f (x) + (p * (Math.Pow (Math.Max (0.0, g1), 2.0) + Math.Pow (Math.Max (0.0, g2), 2.0) + Math.Pow (Math.Max (0.0, g3), 2.0) + Math.Pow (Math.Max (0.0, g4), 2.0) + Math.Pow (Math.Max (0.0, g5), 2.0)));
 
             return returnValue;
+        }
+
+        public static Matrix<double> df_pen_ext (Matrix<double> x, double p)
+        {
+            double x1 = x.At (0, 0);
+            double x2 = x.At (1, 0);
+            double x3 = x.At (2, 0);
+            double x4 = x.At (3, 0);
+
+            // Grad phi = grad f + p * grad Pen
+            Matrix<double> gradF = Functions.df (x);
+            Matrix<double> gradPen = GetXPen (x);
+
+            gradF = gradF.Add (gradPen.Multiply(p));
+
+            return gradF;
+        }
+
+        /// <summary>
+        /// Método para pegar o gradiente da função penalidade
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        private static Matrix<double> GetXPen (Matrix<double> x)
+        {
+            double x1 = x.At (0, 0);
+            double x2 = x.At (1, 0);
+            double x3 = x.At (2, 0);
+            double x4 = x.At (3, 0);
+
+            double g1 = 33.0*x1 + 14.0*x2 + 47.0*x3+ 11*x4 - 59;
+            double g2 = x1 - 1;
+            double g3 = x2 - 1;
+            double g4 = x3 - 1;
+            double g5 = x4 - 1;
+
+            if ((g2 > 0) && (g3 > 0) && (g4 > 0) && (g5 > 0))
+            {
+                if (g1 <= 0)
+                {
+                    return DenseMatrix.OfArray (new Double[,] {
+                    {2*(x1 - 1)},
+                    {2*(x2 - 1)*(Math.Pow((x3 - 1), 2.0))*(Math.Pow((x4 - 1), 2.0))},
+                    {2*(Math.Pow((x2 - 1), 2.0))*(x3 - 1)*(Math.Pow((x4 - 1), 2.0))},
+                    {2*(Math.Pow((x2 - 1), 2.0))*(Math.Pow((x3 - 1), 2.0))*(x4 - 1)}
+                    });
+                }
+                else if (g1 > 0)
+                {
+                    return DenseMatrix.OfArray (new Double[,] {
+                    {2180*x1 + 924*x2 + 3102*x3 + 726*x4 - 3896},
+                    {2*(462*x1 + x2*(Math.Pow(x3,2.0)*Math.Pow((x4 - 1),2.0) - 2*x3*Math.Pow((x4 - 1),2.0) + Math.Pow(x4,2.0) - 2*x4 + 197) + Math.Pow(x3,2.0)*Math.Pow(-x4,2.0) + 2*Math.Pow(x3,2.0)*x4 - Math.Pow(x3,2.0) + 2*x3*Math.Pow(x4,2.0) - 4*x3*x4 + 660*x3 - Math.Pow(x4,2.0) + 156*x4 - 827)},
+                    {},
+                    {}
+                    });
+                }
+            }
         }
     }
 }

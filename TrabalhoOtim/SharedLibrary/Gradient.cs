@@ -33,11 +33,12 @@ namespace SharedLibrary
             return (x.At (0, 0) == 0 && x.At (1, 0) == 0 && x.At (2, 0) == 0 && x.At (3, 0) == 0);
         }
 
-        public static Matrix<double> Execute(Matrix<double> x, Matrix<double> d)
+        public static Matrix<double> Execute(Matrix<double> x, double rho, Functions.Funct f)
         {
            
             double t = 1.0;
             double k = 0.0;
+            Matrix<double> d;
 
             while (!isVectorZero(Functions.df(x)))
             {
