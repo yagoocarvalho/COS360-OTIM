@@ -23,13 +23,8 @@ namespace SharedLibrary
             double teta1 = (3 - Math.Sqrt(5)) / 2;
             double teta2 = 1 - teta1;
 
-
-
             Matrix<double> a = DenseMatrix.OfArray(
                                         new Double[,] { { 1 }, { 1 } });
-
-
-
 
             double t = 1.0;
             Matrix<double> x = DenseMatrix.OfArray(new Double[,] { { 1 }, { 0 } });

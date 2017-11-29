@@ -42,7 +42,7 @@ namespace SharedLibrary
         /// Método para achar o passo usando a técnica de Armijo
         /// </summary>
         /// <returns></returns>
-        public static double Execute( Matrix<double> x, Matrix<double> d)
+        public static double Execute(Matrix<double> x, Matrix<double> d)
         {
             double t = 1.0;
             double n = 0.25;
@@ -50,14 +50,13 @@ namespace SharedLibrary
 
             int i = 0;
 
-            while (f1(x.Add(d.Multiply(t))) > (f1(x) + n * t * (df1(x).TransposeAndMultiply(d).At(0, 0))))
+            while (Functions.f(x.Add(d.Multiply(t))) > (Functions.f(x) + n * t * (Functions.df(x).TransposeAndMultiply(d).At(0, 0))))
             {
                 t = y * t;
                 i++;
 
                 //Limite de iterações = 1000
                 if (i >= 1000) {
-                    t = -1;
                     break;
                 }
             }

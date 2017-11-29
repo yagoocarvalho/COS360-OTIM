@@ -10,27 +10,36 @@ namespace SharedLibrary
 {
     class ExteriorPenalty
     {
-        //min(x+2)²/20
-        //g1= -x+1<=0
-        //g2= x-2<=0
-        static double f1(Matrix<double> x, double p)
-        {
-            return (Math.Pow(x.At(0, 0) + 2, 2)) / 20 +
-                p * ((Math.Max(0, 1 - x.At(0, 0))) + (Math.Max(0,  x.At(0, 0)-2)));
-        }
-
-        public static MathNet.Numerics.LinearAlgebra.Matrix<double> Execute()
+        public static Matrix<double> Execute (Matrix<double> x, Matrix<double> d, double p0, double B = 3.0)
         {
 
-            double t = 1.0;
-            Matrix<double> x = DenseMatrix.OfArray(new Double[,] { { 8 }, { 7 } });
-            Matrix<double> xNext = DenseMatrix.OfArray(new Double[,] { { 0 }, { 0 } });
-
-            double k = 0;
-            double beta = 3;
+            double         t     = 1.0;
             double tol = Double.MaxValue;
 
-            double p = 0;
+            bool   stablized   = false;
+            double p           = p0;
+            Matrix<double> min = DenseMatrix.OfArray (new Double[,] {
+            {0.0},
+            {0.0},
+            {0.0},
+            {0.0}
+            });
+            for (int k = 0; k < 1000; k++)
+            {
+                // Gradiente da função penalizada
+                min = Gradient.Execute (x, d);
+                if (stablized)
+                {
+                    break;
+                }
+                else
+                {
+                    p = B * p;
+                }
+            }
+
+            Console.WriteLine ("p = " + p.ToString ());
+            Console.WriteLine (String.Format ("Ponto mínimo = [{0}, {1}, {2}, {3}]", min.At (0, 0), min.At (1, 0), min.At (2, 0), min.At (3, 0)));
 
             return x;
         }
