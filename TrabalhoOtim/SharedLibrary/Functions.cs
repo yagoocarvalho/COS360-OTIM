@@ -59,7 +59,7 @@ namespace SharedLibrary
             });
         }
 
-        public static double f_pen_ext(Matrix <double> x, double p)
+        public static double f_pen_ext(Matrix <double> x, double rho)
         {
             double x1 = x.At (0,0);
             double x2 = x.At (1,0);
@@ -73,12 +73,12 @@ namespace SharedLibrary
             double g5 = x4 - 1;
 
             // f(x) + p*E(max(0, g)^2)
-            double returnValue = Functions.f (x) + (p * (Math.Pow (Math.Max (0.0, g1), 2.0) + Math.Pow (Math.Max (0.0, g2), 2.0) + Math.Pow (Math.Max (0.0, g3), 2.0) + Math.Pow (Math.Max (0.0, g4), 2.0) + Math.Pow (Math.Max (0.0, g5), 2.0)));
+            double returnValue = Functions.f (x) + (rho * (Math.Pow (Math.Max (0.0, g1), 2.0) + Math.Pow (Math.Max (0.0, g2), 2.0) + Math.Pow (Math.Max (0.0, g3), 2.0) + Math.Pow (Math.Max (0.0, g4), 2.0) + Math.Pow (Math.Max (0.0, g5), 2.0)));
 
             return returnValue;
         }
 
-        public static Matrix<double> df_pen_ext (Matrix<double> x, double p)
+        public static Matrix<double> df_pen_ext (Matrix<double> x, double rho)
         {
             double x1 = x.At (0, 0);
             double x2 = x.At (1, 0);
@@ -89,7 +89,7 @@ namespace SharedLibrary
             Matrix<double> gradF = Functions.df (x);
             Matrix<double> gradPen = GetXPen (x);
 
-            gradF = gradF.Add (gradPen.Multiply(p));
+            gradF = gradF.Add (gradPen.Multiply(rho));
 
             return gradF;
         }
@@ -126,11 +126,19 @@ namespace SharedLibrary
                     returnMatrix.At (0, 0, 2 * (x1 - 1));
                 }
 
-                if (g3 > 0 && g4 > 0 && g5 > 0)
+                if (g3 > 0)
                 {
-                    returnMatrix.At (1, 0, 2*(x2 - 1)*(Math.Pow((x3 - 1), 2.0))*(Math.Pow((x4 - 1), 2.0)));
-                    returnMatrix.At (2, 0, 2*(Math.Pow((x2 - 1), 2.0))*(x3 - 1)*(Math.Pow((x4 - 1), 2.0)));
-                    returnMatrix.At (3, 0, 2*(Math.Pow((x2 - 1), 2.0))*(Math.Pow((x3 - 1), 2.0))*(x4 - 1));
+                    returnMatrix.At (1, 0, 2 * (x2 - 1));
+                }
+                
+                if (g4 > 0)
+                {
+                    returnMatrix.At (2, 0, 2 * (x3 - 1));
+                }
+            
+                if (g5 > 0)
+                {
+                   returnMatrix.At (3, 0, 2 * (x4 - 1));
                 }
             }
             else if (g1 > 0)
@@ -144,17 +152,31 @@ namespace SharedLibrary
                     returnMatrix.At (0, 0, 2180 * x1 + 924 * x2 + 3102 * x3 + 726 * x4 - 3896);
                 }
 
-                if (g3 <= 0 || g4 <= 0 || g5 <= 0)
+                if (g3 <= 0)
                 {
                     returnMatrix.At (1, 0, 28 * (g1));
+                }
+                else if (g3 > 0)
+                {
+                    returnMatrix.At (1, 0, 2*(462*x1 + 197*x2 + 658*x3 + 154*x4 - 827));
+                }
+
+                if (g4 <= 0)
+                {
                     returnMatrix.At (2, 0, 94 * (g1));
+                }
+                else if (g4 > 0)
+                {
+                    returnMatrix.At (2, 0, 2*(1551*x1 + 658*x2 + 2210*x3 + 517*x4 - 2774));
+                }
+
+                if (g5 <= 0)
+                {
                     returnMatrix.At (3, 0, 22 * (g1));
                 }
-                else if (g3 > 0 && g4 > 0 && g5 > 0)
+                else if (g5 > 0)
                 {
-                    returnMatrix.At (1, 0, 2*(462*x1 + x2*(Math.Pow(x3,2.0)*Math.Pow((x4 - 1),2.0) - 2*x3*Math.Pow((x4 - 1),2.0) + Math.Pow(x4,2.0) - 2*x4 + 197) + Math.Pow(x3,2.0)*Math.Pow(-x4,2.0) + 2*Math.Pow(x3,2.0)*x4 - Math.Pow(x3,2.0) + 2*x3*Math.Pow(x4,2.0) - 4*x3*x4 + 660*x3 - Math.Pow(x4,2.0) + 156*x4 - 827));
-                    returnMatrix.At (2, 0, 2*(1551*x1 + Math.Pow(x2,2.0)*(x3 - 1)*Math.Pow((x4 - 1),2.0) - 2*x2*(x3*Math.Pow((x4 - 1),2.0) - Math.Pow(x4,2.0) + 2*x4 - 330) + x3*Math.Pow(x4,2.0) - 2*x3*x4 + 2210*x3 - Math.Pow(x4,2.0) + 519*x4 - 2774));
-                    returnMatrix.At (3, 0, 2 * (363 * x1 + Math.Pow (x2, 2.0) * Math.Pow ((x3 - 1), 2.0) * (x4 - 1) - 2 * x2 * (Math.Pow (x3, 2.0) * (x4 - 1) - 2 * x3 * (x4 - 1) + x4 - 78) + Math.Pow (x3, 2.0) * x4 - Math.Pow (x3, 2.0) - 2 * x3 * x4 + 519 * x3 + 122 * x4 - 650));
+                    returnMatrix.At (3, 0, 2*(363*x1 + 154*x2 + 517*x3 + 122*x4 - 650));
                 }
             }
 

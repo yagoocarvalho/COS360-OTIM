@@ -11,24 +11,6 @@ namespace SharedLibrary
 {
     public class Gradient
     {
-        //x1² - 24x1 + x2²-10x2
-        //static double f1(Matrix<double> x)
-        //{
-        //    return (Math.Pow(x.At(0, 0), 2)) - 24 * x.At(0, 0) + Math.Pow(x.At(1, 0), 2) - 10 * x.At(1, 0);
-        //}
-
-
-        //static Matrix<double> df1(Matrix<double> x)
-        //{
-        //    double[] gradient = new double[2];
-        //    gradient[0] = 2*x.At(0, 0) - 24;
-        //    gradient[1] = 2 * x.At(1, 0) - 10;
-
-        //    Matrix<double> df = DenseMatrix.OfArray(new Double[,] { { gradient[0] }, { gradient[1] } });
-
-        //    return df;
-        //}
-
         public static bool isVectorZero(Matrix<double> x)
         {
             return (x.At (0, 0) == 0 && x.At (1, 0) == 0 && x.At (2, 0) == 0 && x.At (3, 0) == 0);

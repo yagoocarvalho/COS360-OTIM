@@ -78,15 +78,11 @@ namespace SharedLibrary
             {
                 return true;
             }
-            if (k >= 150)
+            if (k >= 500)     // Número max iterações
             {
                 return true;
             }
-            if (xK.Equals(xK_1))
-            {
-                return true;
-            }
-            if (Functions.f_pen_ext (xK, rho) == Functions.f_pen_ext (xK_1, rho))
+            if (xK.Equals(xK_1))   // x(k) = x(k-1)
             {
                 return true;
             }

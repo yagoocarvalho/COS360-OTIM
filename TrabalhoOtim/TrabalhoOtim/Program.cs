@@ -25,7 +25,7 @@ namespace TrabalhoOtim
             }
 
 
-            //GetMinimum.Execute();
+            GetMinimum.Execute();
 
             //}
             //Matrix<double> d = DenseMatrix.OfArray(new Double[,] {
@@ -56,7 +56,6 @@ namespace TrabalhoOtim
             { _x0[3] }
             });
 
-            Console.WriteLine (Functions.f(x));
 
             using (StreamWriter sw = new StreamWriter (@"C:\Users\yagom\Desktop\trab-otim.csv", true))
             {

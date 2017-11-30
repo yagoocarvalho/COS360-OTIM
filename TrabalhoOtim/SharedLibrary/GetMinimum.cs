@@ -37,23 +37,38 @@ namespace SharedLibrary
                                                                     autovalores.At(2).ToString("0.00"),
                                                                     autovalores.At(3).ToString("0.00"));
             bool isMinimumPoint = true;
+            int countNeg = 0;
+            int countPos = 0;
             foreach (Double autovalor in autovalores)
             {
                 if (autovalor < 0)
                 {
-                    isMinimumPoint = false;
-                    break;
+                    countNeg++;
+                }
+                else if (autovalor > 0)
+                {
+                    countPos++;
                 }
             }
 
-            if (isMinimumPoint)
+            if (countPos == 0 && countNeg > 0)
             {
-                Console.WriteLine("Ponto de mínimo encontrado: x* = [{0}, {1}, {2}, {3}]", criticPoint.At(0, 0),
-                                                    criticPoint.At(1, 0), criticPoint.At(2, 0), criticPoint.At(3, 0));
+                Console.WriteLine ("Ponto de máximo encontrado: x* = [{0}, {1}, {2}, {3}]", criticPoint.At (0, 0),
+                                                    criticPoint.At (1, 0), criticPoint.At (2, 0), criticPoint.At (3, 0));
+            }
+            else if (countNeg == 0 && countPos > 0)
+            {
+                Console.WriteLine ("Ponto de mínimo encontrado: x* = [{0}, {1}, {2}, {3}]", criticPoint.At (0, 0),
+                                                    criticPoint.At (1, 0), criticPoint.At (2, 0), criticPoint.At (3, 0));
+            }
+            else if (countPos > 0 && countNeg > 0)
+            {
+                Console.WriteLine ("Ponto de sela encontrado: x* = [{0}, {1}, {2}, {3}]", criticPoint.At (0, 0),
+                                                    criticPoint.At (1, 0), criticPoint.At (2, 0), criticPoint.At (3, 0));
             }
             else
             {
-                Console.WriteLine("Não foi encontrado nenhum ponto mínimo.");
+                Console.WriteLine("Não foi possível classificar o ponto crítico.");
             }
         }
     }
