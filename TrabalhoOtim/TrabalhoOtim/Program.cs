@@ -55,7 +55,9 @@ namespace TrabalhoOtim
             { _x0[3] }
             });
 
-            for (double rho = 1.0; rho > 0.00001; rho = rho/10)
+            Console.WriteLine (Functions.f(x));
+
+            for (double rho = 1.0; rho < 1000; rho = rho*10)
             {
                 ExteriorPenalty.Execute (x, rho, 3.0, false);
                 ExteriorPenalty.Execute (x, rho, 3.0, true);
@@ -95,14 +97,11 @@ namespace TrabalhoOtim
         private static bool ParseOptions ()
         {
             string x0 = ConfigurationManager.AppSettings.Get ("x0");
-            string d0 = ConfigurationManager.AppSettings.Get ("d0");
 
             try
             {
                 string[] splittedArray = x0.Split (';');
                 _x0 = new double[] { double.Parse (splittedArray[0]), double.Parse (splittedArray[1]), double.Parse (splittedArray[2]), double.Parse (splittedArray[3]) };
-                splittedArray = d0.Split (';');
-                _d0 = new double[] { double.Parse (splittedArray[0]), double.Parse (splittedArray[1]), double.Parse (splittedArray[2]), double.Parse (splittedArray[3]) };
             }
             catch (Exception ex)
             {

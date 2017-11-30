@@ -130,7 +130,7 @@ namespace SharedLibrary
                 {2*(363*x1 + Math.Pow(x2,2.0)*Math.Pow((x3 - 1),2.0)*(x4 - 1) - 2*x2*(Math.Pow(x3,2.0)*(x4 - 1) - 2*x3*(x4 - 1) + x4 - 78) + Math.Pow(x3,2.0)*x4 - Math.Pow(x3,2.0) - 2*x3*x4 + 519*x3 + 122*x4 - 650)}
                 });
             }
-            else if ((g2 <= 0 || g3 <= 0 || g4 <= 0) && (g1 > 0))
+            else if ((g2 <= 0 || g3 <= 0 || g4 <= 0 || g5 <= 0) && (g1 > 0))
             {
                 return DenseMatrix.OfArray(new Double[,] {
                 {66*(g1)},

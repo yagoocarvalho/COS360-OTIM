@@ -63,17 +63,13 @@ namespace SharedLibrary
             double g4 = x3 - 1;
             double g5 = x4 - 1;
 
-            if (xK.Subtract(xK-1).Column(0).Norm(2) <= tol)  // || delta x || < tol
+            if (xK.Subtract(xK_1).Column(0).Norm(2) <= tol)  // || delta x || < tol
             {
                 return true;
             }
-            if (k >= 1000)
+            if (k >= 150)
             {
                 return true;
-            }
-            if (g1 > 0 || g2 > 0 || g3 > 0 || g4 > 0 || g5 > 0)
-            {
-                return false;
             }
             if (xK.Equals(xK_1))
             {
