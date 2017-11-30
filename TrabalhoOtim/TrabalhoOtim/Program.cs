@@ -54,14 +54,12 @@ namespace TrabalhoOtim
             { _x0[2] },
             { _x0[3] }
             });
-            Matrix<double> d = DenseMatrix.OfArray (new Double[,] { 
-            { _d0[0] }, 
-            { _d0[1] },
-            { _d0[2] },
-            { _d0[3] }
-            });
 
-            ExteriorPenalty.Execute(x, 1.0, 3.0);
+            for (double rho = 1.0; rho > 0.00001; rho = rho/10)
+            {
+                ExteriorPenalty.Execute (x, rho, 3.0, false);
+                ExteriorPenalty.Execute (x, rho, 3.0, true);
+            }
 
             Console.ReadKey ();
         }

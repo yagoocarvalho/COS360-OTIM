@@ -2,6 +2,7 @@
 using MathNet.Numerics.LinearAlgebra.Double;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,26 +11,41 @@ namespace SharedLibrary
 {
     public class ExteriorPenalty
     {
-        public static Matrix<double> Execute (Matrix<double> x0, double rho0, double beta = 3.0)
+        public static Matrix<double> Execute (Matrix<double> x0, double rho0, double beta = 3.0, bool armijo = true)
         {
             double         tol  = Double.MaxValue;
                            
             double         rho  = rho0;
             Matrix<double> xK   = x0;
             Matrix<double> xK_1 = x0;
-            for (int k = 0; k < 1000; k++)
+            for (int k = 0; k < 150; k++)
             {
                 // Gradiente da função penalizada
                 xK_1 = xK;
-                xK = Gradient.Execute (xK, rho);  // min phi(x, rho), xk = x
+                xK = Gradient.Execute (xK, rho, armijo);  // min phi(x, rho), xk = x
                 if (!functionStabilized(xK, xK_1, tol, k, rho))    
                 {
                     rho = beta * rho;
                 }
+                else
+                {
+                    break;
+                }
             }
 
+            using (StreamWriter sw = new StreamWriter(@"C:\Users\yagom\Desktop\trab-otim.txt", true))
+            {
+                sw.WriteLine (armijo ? "Usando Armijo" : "Usando Seção Áurea");
+                sw.WriteLine ("rho = " + rho.ToString ());
+                sw.WriteLine (String.Format ("Ponto mínimo = [{0}, {1}, {2}, {3}]", xK.At (0, 0), xK.At (1, 0), xK.At (2, 0), xK.At (3, 0)));
+                sw.WriteLine ("_______________________________________________________________________________");
+                sw.Flush ();
+            }
+
+            Console.WriteLine (armijo ? "Usando Armijo" : "Usando Seção Áurea");
             Console.WriteLine ("rho = " + rho.ToString ());
             Console.WriteLine (String.Format ("Ponto mínimo = [{0}, {1}, {2}, {3}]", xK.At (0, 0), xK.At (1, 0), xK.At (2, 0), xK.At (3, 0)));
+            Console.WriteLine ("__________________________________________________________________________________");
 
             return xK;
         }
@@ -47,7 +63,7 @@ namespace SharedLibrary
             double g4 = x3 - 1;
             double g5 = x4 - 1;
 
-            if (xK.Subtract(xK-1).Column(0).Norm(2) <= tol)  // || delta x || 
+            if (xK.Subtract(xK-1).Column(0).Norm(2) <= tol)  // || delta x || < tol
             {
                 return true;
             }

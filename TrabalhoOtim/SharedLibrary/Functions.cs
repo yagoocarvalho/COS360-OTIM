@@ -141,7 +141,12 @@ namespace SharedLibrary
             }
             else 
             {
-                throw new Exception("Derivada não definida para os pontos dados");
+                return DenseMatrix.OfArray (new Double[,] {
+                {0},
+                {0},
+                {0},
+                {0}
+                });
             }
         }
     }

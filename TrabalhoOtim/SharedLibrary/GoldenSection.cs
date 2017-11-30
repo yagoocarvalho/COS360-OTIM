@@ -2,6 +2,7 @@
 using MathNet.Numerics.LinearAlgebra.Double;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace SharedLibrary
         }
 
 
-        public static double Execute(Matrix<double> x, Matrix<double> d, double p)
+        public static double Execute(Matrix<double> x, Matrix<double> d, double p, out int k)
         {
             double tol = 0.0001;
             double teta1 = (3 - Math.Sqrt(5)) / 2;
@@ -49,7 +50,7 @@ namespace SharedLibrary
             double u = a + teta1 * (b - a);
             double v = a + teta2 * (b - a);
             //Nº max de iterações
-            double k = 0;
+            k = 0;
 
             while ((b - a) > tol) {
                 if (phi(x, d, u, p) < phi(x, d, v, p)){
@@ -59,7 +60,7 @@ namespace SharedLibrary
                     a = u; u = v; v = a + teta2 * (b - a);
                 }
                 k++;
-                if (k >= 1000)
+                if (k >= 150)
                     break;
             }
 

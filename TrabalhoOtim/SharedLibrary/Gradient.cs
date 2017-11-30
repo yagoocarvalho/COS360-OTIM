@@ -2,6 +2,7 @@
 using MathNet.Numerics.LinearAlgebra.Double;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,29 +34,40 @@ namespace SharedLibrary
             return (x.At (0, 0) == 0 && x.At (1, 0) == 0 && x.At (2, 0) == 0 && x.At (3, 0) == 0);
         }
 
-        public static Matrix<double> Execute(Matrix<double> x, double rho)
+        public static Matrix<double> Execute(Matrix<double> x, double rho, bool armijo)
         {
-           
+            int kArmijo = 0;
+            int kSecaoAurea = 0;
             double t = 1.0;
             double k = 0.0;
             Matrix<double> d;
 
-            while (!isVectorZero(Functions.df_pen_ext(x, rho)))
+            while (!isVectorZero(Functions.df_pen_ext(x, rho))) // Enquanto grad f_ext_pen != 0
             {
-                d = Functions.df_pen_ext(x, rho).Negate();
-                t = Armijo.Execute(x,d, rho);
-                x = x.Add(d.Multiply(t));
+                d = Functions.df_pen_ext(x, rho).Negate(); // Seleciona uma direção
+                if (armijo)
+                    t = Armijo.Execute (x, d, rho, out kArmijo);   // calcula o passo por armijo
+                else
+                    t = GoldenSection.Execute (x, d, rho, out kSecaoAurea); // calcula o passo por seção aurea
+                x = x.Add(d.Multiply(t)); // xk+1 = xk + d*t
                 k = k + 1;
 
-                Console.WriteLine(x);
-
-                //Limite de iterações = 1000
-                if (k >= 1000)
+                //Limite de iterações = 150
+                if (k >= 150)
                 {
                     break;
                 }
-                Console.WriteLine("ok");
             }
+
+            using (StreamWriter sw = new StreamWriter (@"C:\Users\yagom\Desktop\trab-otim.txt", true))
+            {
+                sw.WriteLine (String.Format ("Número de iterações do gradiente: {0}", k));
+                sw.WriteLine (String.Format ("Número de iterações do {0}: {1}", armijo ? "Armijo" : "Seção Áurea", armijo ? kArmijo : kSecaoAurea));
+                sw.Flush ();
+            }
+
+            Console.WriteLine (String.Format ("Número de iterações do gradiente: {0}", k));
+            Console.WriteLine (String.Format ("Número de iterações do {0}: {1}", armijo ? "Armijo" : "Seção Áurea", armijo ? kArmijo : kSecaoAurea));
             return x;
         }
     }
