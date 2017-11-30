@@ -50,18 +50,24 @@ namespace SharedLibrary
             double u = a + teta1 * (b - a);
             double v = a + teta2 * (b - a);
             //Nº max de iterações
-            k = 0;
+            k = 1;
 
             while ((b - a) > tol) {
                 if (phi(x, d, u, p) < phi(x, d, v, p)){
-                    b = v;  v = u; u = a + teta1 * (b - a);
+                    b = v;  
+                    v = u; 
+                    u = a + teta1 * (b - a);
                 }
                 else {
-                    a = u; u = v; v = a + teta2 * (b - a);
+                    a = u; 
+                    u = v; 
+                    v = a + teta2 * (b - a);
                 }
-                k++;
-                if (k >= 150)
+                
+                if (k >= 500)
                     break;
+
+                k++;
             }
 
             double t = (u + v) / 2;

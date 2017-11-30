@@ -13,16 +13,17 @@ namespace SharedLibrary
     {
         public static Matrix<double> Execute (Matrix<double> x0, double rho0, double beta = 3.0, bool armijo = true)
         {
-            double         tol  = Double.MaxValue;
-                           
-            double         rho  = rho0;
-            Matrix<double> xK   = x0;
-            Matrix<double> xK_1 = x0;
-            for (int k = 0; k < 150; k++)
+            int            kBusca = 0;
+            double         tol    = 0.00001;
+            double         rho    = rho0;
+            Matrix<double> xK     = x0;
+            Matrix<double> xK_1   = x0;
+            int k = 1;
+            for (k = 1; k <= 500; k++)
             {
                 // Gradiente da função penalizada
                 xK_1 = xK;
-                xK = Gradient.Execute (xK, rho, armijo);  // min phi(x, rho), xk = x
+                xK = Gradient.Execute (xK, rho, armijo, out kBusca);  // min phi(x, rho), xk = x
                 if (!functionStabilized(xK, xK_1, tol, k, rho))    
                 {
                     rho = beta * rho;
@@ -35,6 +36,8 @@ namespace SharedLibrary
 
             using (StreamWriter sw = new StreamWriter(@"C:\Users\yagom\Desktop\trab-otim.txt", true))
             {
+                sw.WriteLine (String.Format ("Ponto inicial = [{0}, {1}, {2}, {3}]", x0.At (0, 0), x0.At (1, 0), x0.At (2, 0), x0.At (3, 0)));
+                sw.WriteLine ("Número de iterações da Penalidade Exterior: " + k);
                 sw.WriteLine (armijo ? "Usando Armijo" : "Usando Seção Áurea");
                 sw.WriteLine ("rho = " + rho.ToString ());
                 sw.WriteLine (String.Format ("Ponto mínimo = [{0}, {1}, {2}, {3}]", xK.At (0, 0), xK.At (1, 0), xK.At (2, 0), xK.At (3, 0)));
@@ -42,10 +45,18 @@ namespace SharedLibrary
                 sw.Flush ();
             }
 
+            Console.WriteLine (String.Format ("Ponto inicial = [{0}, {1}, {2}, {3}]", x0.At (0, 0), x0.At (1, 0), x0.At (2, 0), x0.At (3, 0)));
+            Console.WriteLine ("Número de iterações da Penalidade Exterior: " + k);
             Console.WriteLine (armijo ? "Usando Armijo" : "Usando Seção Áurea");
             Console.WriteLine ("rho = " + rho.ToString ());
             Console.WriteLine (String.Format ("Ponto mínimo = [{0}, {1}, {2}, {3}]", xK.At (0, 0), xK.At (1, 0), xK.At (2, 0), xK.At (3, 0)));
             Console.WriteLine ("__________________________________________________________________________________");
+
+            using (StreamWriter sw = new StreamWriter (@"C:\Users\yagom\Desktop\trab-otim.csv", true))
+            {
+                sw.WriteLine (String.Format ("{0};{1};{2};{3};{4};{5}", String.Format ("[{0}, {1}, {2}, {3}]", x0.At (0, 0), x0.At (1, 0), x0.At (2, 0), x0.At (3, 0)), k, armijo ? "Armijo" : "Seção Áurea", kBusca, String.Format ("[{0}, {1}, {2}, {3}]", xK.At (0, 0), xK.At (1, 0), xK.At (2, 0), xK.At (3, 0)), Functions.f(xK)));
+                sw.Flush ();
+            }
 
             return xK;
         }

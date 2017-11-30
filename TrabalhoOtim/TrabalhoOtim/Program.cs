@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SharedLibrary;
 using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.LinearAlgebra;
+using System.IO;
 
 namespace TrabalhoOtim
 {
@@ -57,10 +58,16 @@ namespace TrabalhoOtim
 
             Console.WriteLine (Functions.f(x));
 
-            for (double rho = 1.0; rho < 1000; rho = rho*10)
+            using (StreamWriter sw = new StreamWriter (@"C:\Users\yagom\Desktop\trab-otim.csv", true))
             {
-                ExteriorPenalty.Execute (x, rho, 3.0, false);
-                ExteriorPenalty.Execute (x, rho, 3.0, true);
+                sw.WriteLine (String.Format ("{0};{1};{2};{3};{4};{5}", "X0", "Iter", "Busca", "Chamada Busca", "Ponto Mínimo", "Valor da função no ponto mínimo"));
+                sw.Flush ();
+            }
+
+            for (double k = 0.1; k < 1.0; k = k + 0.1)
+            {
+                ExteriorPenalty.Execute (x.Add(-k), 10, 3.0, false);
+                ExteriorPenalty.Execute (x.Add(-k), 10, 3.0, true);
             }
 
             Console.ReadKey ();

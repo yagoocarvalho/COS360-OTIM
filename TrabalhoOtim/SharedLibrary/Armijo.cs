@@ -21,17 +21,20 @@ namespace SharedLibrary
             double n = 0.25;
             double y = 0.8;
 
-            i = 0;
+            i = 1;
 
-            while (Functions.f_pen_ext(x.Add(d.Multiply(t)), rho) > (Functions.f_pen_ext(x, rho) + n * t * (Functions.df_pen_ext(x, rho).TransposeAndMultiply(d).At(0, 0))))
+            while (Functions.f_pen_ext(x.Add(d.Multiply(t)), rho) > 
+                  (Functions.f_pen_ext(x, rho) + n * t * (Functions.df_pen_ext(x, rho).TransposeAndMultiply(d).At(0, 0))))
             {
                 t = y * t;
-                i++;
+        
 
                 //Limite de iterações = 150
-                if (i >= 150) {
+                if (i >= 500) {
                     break;
                 }
+
+                i++;
             }
 
             return t;
